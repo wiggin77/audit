@@ -13,6 +13,7 @@ Who, what, where, when
 ## High level design
 
 [TODO: request comments regarding replacement of AuditStore with enhanced logging engine]
+
 Auditing will be done with a dedicated API but utilize the logging engine for storage.
 
 Logging engine enhancements will be made to facilitate audit goals, but also improve logging in general. Logging will become an asynchronous operation, to the extent possible, by queuing the data to be logged quickly, then formatting and storing using background goroutines owned by the logging engine.
