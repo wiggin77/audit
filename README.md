@@ -71,13 +71,20 @@ type AuditRecord struct {
 
 ## Audit API
 
+From web.Context, audit API will be modified to have variadic parameters, but otherwise be unchanged. However all calls will need to be reviewed to ensure required fields are added. Conversion of name value strings to Meta map will happen asynchronously.
+
+Context will continue to be used to auto-populate some of the audit record fields.
+[TODO: request comments regarding security/reliability of data within Context]
+
 ## Storage
 
 Storage options will be administrator configurable via logging engine configuration. When storing to file, typically the audit records will go to a separate file from general logging.
 
-## Reporting
-
 ## Alerting
+
+Alerting will be achieved via a plugin logger target, and configured used a discrete log level. Destination(s) for alerts can be email, database, Mattermost channel post, or other.
+
+## Reporting
 
 ## Configuration
 
