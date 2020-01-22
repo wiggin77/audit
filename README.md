@@ -27,7 +27,7 @@ Another issue with asynchronous logging is deciding what to do when the queue is
 
 [TODO: determine queue approach: buffered channel, ring buffer, ...]
 
-Queue(s) will be monitored for capacity
+Queue(s) will be monitored for capacity .....................
 
 Asynchronous logging also requires explicit call to logging shutdown method to ensure queues are flushed. All application exit paths must be covered.
 
