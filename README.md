@@ -76,6 +76,8 @@ From web.Context, audit API will be modified to have variadic parameters, but ot
 Context will continue to be used to auto-populate some of the audit record fields.
 [TODO: request comments regarding security/reliability of data within Context]
 
+[TODO: api examples, code snippets]
+
 ## Storage
 
 Storage options will be administrator configurable via logging engine configuration. When storing to file, typically the audit records will go to a separate file from general logging.
