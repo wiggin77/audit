@@ -23,11 +23,11 @@ Logging asynchronously presents some caveats. For example, when logging a struct
 1. types of arguments will be inspected and copies made for mutable types before enqueuing
 2. all formatting will happen before enqueuing
 
-Another issue with asynchronous logging is deciding what to do when the queue is full. To keep things simple the caller will be blocked up to a configurable timeout waiting for enqueue to succeed. If enqueue succeeds before the timeout then a counter representing logging contention will be incremented and the total emitted periodically. If enqueue times out then an alert is emitted. 
+Another issue with asynchronous logging is deciding what to do when the queue is full. To keep things simple the caller will be blocked up to a configurable timeout waiting for enqueue to succeed. If enqueue succeeds before the timeout then a counter representing logging contention will be incremented and the total emitted periodically. If enqueue times out then an alert is emitted.
 
 [TODO: determine queue approach: buffered channel, ring buffer, ...]
 
-Queue(s) will be monitored for capacity .....................
+Queue(s) will be monitored for percent full and periodically reported.
 
 Asynchronous logging also requires explicit call to logging shutdown method to ensure queues are flushed. All application exit paths must be covered.
 
