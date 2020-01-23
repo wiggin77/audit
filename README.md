@@ -4,7 +4,7 @@ Who, what, where, when
 
 ## Objectives
 
-* Improve existing audit mechanism to provide comprehensive information about actions performed
+* Improve existing audit mechanism to provide comprehensive information about actions performed and the resulting auditable events
 * Ensure audit emission cannot be bypassed
 * Alert when auditing thresholds are exceeded, such as frequency of failures across all APIs, or per user, or per IP address
 * Emit audit records asynchronously to reduce latency to the caller
@@ -48,7 +48,8 @@ A single audit record is emitted for each event (add, delete, login, ...). Multi
 | ---------- | ----------------- | -----------     |
 | Id         | string            | audit record id |
 | CreateAt   | int64             | timestamp of record creation, UTC |
-| API        | string            | endpoint path |
+| APILayer   | string            | e.g. rest, app |
+| APIPath    | string            | rest endpoint  |
 | Event      | string            | e.g. add, delete, login, ... |
 | UserId     | string            | id of user calling the API |
 | SessionId  | string            | id of session used to call the API |
@@ -72,10 +73,17 @@ type AuditRecord struct {
 
 ## Audit API
 
+### Web/Rest Layer
+
 From web.Context, audit API will be modified to have variadic parameters, but otherwise be unchanged. However all calls will need to be reviewed to ensure required fields are added. Conversion of name value strings to Meta map will happen asynchronously.
 
 Context will continue to be used to auto-populate some of the audit record fields.
 [TODO: request comments regarding security/reliability of data within Context]
+
+### App layer
+
+New APIs will be added in the app layer to capture all auditable events. This is necessary because not all auditable events are triggered via the Rest API. This means certain code paths will emit multiple audit records for the same event. To reduce noise, the `APILayer` field will be used to filter records such that only the record emitted closest to the caller is kept. For example, a caller using the Rest API will have any app layer records filtered leaving only the Rest layer record.
+[TODO: is filtering really necessary?]
 
 [TODO: api examples, code snippets]
 
