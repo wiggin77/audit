@@ -27,7 +27,7 @@ Another issue with asynchronous logging is deciding what to do when the queue is
 
 [TODO: determine queue approach: buffered channel, ring buffer, ...]
 
-Queue(s) will be monitored for percent full and periodically reported.
+Queue(s) will be monitored for percent full and metrics provided via Prometheus.
 
 Asynchronous logging also requires explicit call to logging shutdown method to ensure queues are flushed. All application exit paths must be covered.
 
@@ -44,18 +44,18 @@ Logging engine will allow logging levels and discrete levels to different target
 
 A single audit record is emitted for each event (add, delete, login, ...). Multiple auditable events may be emitted for a single API call.
 
-| name       | type              | description     |
-| ---------- | ----------------- | -----------     |
-| Id         | string            | audit record id |
-| CreateAt   | int64             | timestamp of record creation, UTC |
-| APILayer   | string            | e.g. rest, app |
-| APIPath    | string            | rest endpoint  |
-| Event      | string            | e.g. add, delete, login, ... |
-| UserId     | string            | id of user calling the API |
-| SessionId  | string            | id of session used to call the API |
-| Client     | string            | e.g. webapp, mmctl, user-agent |
-| IPAddress  | string            | ip address of Client |
-| Meta       | map[string]string | API specific info; e.g. user id being deleted |
+| name       | type                   | description     |
+| ---------- | ---------------------- | --------------- |
+| Id         | string                 | audit record id |
+| CreateAt   | int64                  | timestamp of record creation, UTC |
+| APILayer   | string                 | e.g. rest, app |
+| APIPath    | string                 | rest endpoint  |
+| Event      | string                 | e.g. add, delete, login, ... |
+| UserId     | string                 | id of user calling the API |
+| SessionId  | string                 | id of session used to call the API |
+| Client     | string                 | e.g. webapp, mmctl, user-agent |
+| IPAddress  | string                 | ip address of Client |
+| Meta       | map[string]interface{} | API specific info; e.g. user id being deleted |
 
 ```go
 type AuditRecord struct {
@@ -67,7 +67,7 @@ type AuditRecord struct {
   SessionId   string
   Client      string
   IPAddress   string
-  Meta        map[string]string
+  Meta        map[string]interface{}
 }
 ```
 
@@ -90,6 +90,12 @@ New APIs will be added in the app layer to capture all auditable events. This is
 ## Storage
 
 Storage options will be administrator configurable via logging engine configuration. When storing to file, typically the audit records will go to a separate file from general logging.
+
+In the case of error writing to the target storage several strategies can be employed. The strategy(s) chosen are specific to the target type (file, database, email, ...).
+
+1. Retries based on count, interval and/or space left in target queue
+2. Alert via different target (e.g. email)
+3. Spool to local disk, with size cap, then write to target when it becomes available
 
 ## Alerting
 
