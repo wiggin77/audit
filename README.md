@@ -97,6 +97,8 @@ In the case of error writing to the target storage several strategies can be emp
 2. Alert via different target (e.g. email)
 3. Spool to local disk, with size cap, then write to target when it becomes available
 
+To ensure audit logs cannot be unknowingly tampered with or corrupted it will be possible to configure the logging engine to sign log files for specific targets. Audit logs should be stored in multiple places (e.g. file and database) so they can reconciled if needed.
+
 ## Alerting
 
 Alerting will be achieved via a plugin logger target, and configured used a discrete log level. Destination(s) for alerts can be email, database, Mattermost channel post, or other.
