@@ -101,7 +101,7 @@ To ensure audit logs cannot be unknowingly tampered with or corrupted it will be
 
 ## Alerting
 
-Alerting will be achieved via a plugin logger target, and configured used a discrete log level. Destination(s) for alerts can be email, database, Mattermost channel post, or other.
+Alerting will be achieved via a plugin logger target, and configured using a discrete log level. Destination(s) for alerts can be email, database, Mattermost channel post, or other.
 
 ## Reporting
 
