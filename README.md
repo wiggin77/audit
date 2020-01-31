@@ -61,7 +61,8 @@ A single audit record is emitted for each event (add, delete, login, ...). Multi
 type AuditRecord struct {
   Id          string
   CreateAt    int64
-  API         string
+  APILayer    string
+  APIPath     string
   Event       string
   UserId      string
   SessionId   string
