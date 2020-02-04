@@ -46,11 +46,12 @@ A single audit record is emitted for each event (add, delete, login, ...). Multi
 
 | name       | type                   | description     |
 | ---------- | ---------------------- | --------------- |
-| Id         | string                 | audit record id |
+| ID         | string                 | audit record id |
 | CreateAt   | int64                  | timestamp of record creation, UTC |
-| APILayer   | string                 | e.g. rest, app |
+| Level      | string                 | e.g. audit-rest, audit-app, audit-model |
 | APIPath    | string                 | rest endpoint  |
 | Event      | string                 | e.g. add, delete, login, ... |
+| Status     | string                 | e.g. attempt, success, fail, ... |
 | UserId     | string                 | id of user calling the API |
 | SessionId  | string                 | id of session used to call the API |
 | Client     | string                 | e.g. webapp, mmctl, user-agent |
@@ -59,11 +60,12 @@ A single audit record is emitted for each event (add, delete, login, ...). Multi
 
 ```go
 type AuditRecord struct {
-  Id          string
-  CreateAt    int64
-  APILayer    string
+  ID          string
+  //CreateAt    int64  -- added by logger
+  Level       string
   APIPath     string
   Event       string
+  Status      string
   UserId      string
   SessionId   string
   Client      string
